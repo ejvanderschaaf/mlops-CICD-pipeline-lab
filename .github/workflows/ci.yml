@@ -51,9 +51,23 @@ jobs:
           name: model-artifact
           path: artifacts/
 
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.9"
+
+      - name: Package model with model card
+        run: python package_model.py ${{ github.sha }}
+
       - name: Deploy to Staging
         run: |
           echo "All checks passed. Deploying model..."
           echo "Model files:"
           ls -lh artifacts/
           echo "Deployed model.pkl to staging at $(date -u)"
+
+      - name: Upload versioned deployment artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: deployment-${{ github.sha }}
+          path: artifacts/
