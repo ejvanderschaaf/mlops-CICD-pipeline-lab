@@ -10,26 +10,27 @@ jobs:
   build-and-test:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
-    - name: Set up Python
-      uses: actions/setup-python@v2
-      with: python-version: "3.9"
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.9"
 
-    - name: Install dependencies
-      run: | pip install -r requirements.txt
+      - name: Install dependencies
+        run: pip install -r requirements.txt
 
-    - name: Lint (Optional)
-      run: flake8 . --max-line-length=100
+      - name: Lint
+        run: flake8 . --max-line-length=100
 
-    - name: Run Unit Tests
-      run: pytest tests/
+      - name: Run Unit Tests
+        run: pytest tests/
 
-    - name: Small-Scale Training
-      run: python train.py
+      - name: Small-Scale Training
+        run: python train.py
 
-    - name: Evaluate Model
-      run: python evaluate.py
+      - name: Evaluate Model
+        run: python evaluate.py
 
-    - name: Check Performance Threshold
-      run: python check_performance.py
+      - name: Check Performance Threshold
+        run: python check_performance.py
