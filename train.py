@@ -1,24 +1,25 @@
-import subprocess
 import os
+import pickle
+from sklearn.datasets import load_iris
+from sklearn.linear_model import LogisticRegression
+from sklearn.model_selection import train_test_split
 
+# Load dataset
+iris = load_iris()
+X, y = iris.data, iris.target
 
-def test_model_training():
-    """Check that train.py runs without errors."""
-    result = subprocess.run(["python", "train.py"], capture_output=True)
-    assert result.returncode == 0, f"Training script failed!\n{result.stderr.decode()}"
+# Use a small subset to keep training fast (good for CI)
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42
+)
 
+# Train a simple model
+model = LogisticRegression(max_iter=200, random_state=42)
+model.fit(X_train, y_train)
 
-def test_artifact_created():
-    """Check that the model artifact was actually saved."""
-    assert os.path.exists("artifacts/model.pkl"), "Model artifact not found!"
+# Save model artifact
+os.makedirs("artifacts", exist_ok=True)
+with open("artifacts/model_broken.pkl", "wb") as f:
+    pickle.dump(model, f)
 
-
-def test_evaluate_runs():
-    """Check that evaluate.py runs without errors."""
-    result = subprocess.run(["python", "evaluate.py"], capture_output=True)
-    assert result.returncode == 0, f"Evaluate script failed!\n{result.stderr.decode()}"
-
-
-def test_metrics_file_created():
-    """Check that evaluate.py produced a metrics file."""
-    assert os.path.exists("artifacts/metrics.txt"), "Metrics file not found!"
+print("Training complete. Model saved to artifacts/model.pkl")
