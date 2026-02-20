@@ -34,3 +34,26 @@ jobs:
 
       - name: Check Performance Threshold
         run: python check_performance.py
+
+      - name: Upload model artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: model-artifact
+          path: artifacts/
+
+  deploy:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download model artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: model-artifact
+          path: artifacts/
+
+      - name: Deploy to Staging
+        run: |
+          echo "All checks passed. Deploying model..."
+          echo "Model files:"
+          ls -lh artifacts/
+          echo "Deployed model.pkl to staging at $(date -u)"
