@@ -23,5 +23,5 @@ os.makedirs("artifacts", exist_ok=True)
 with open("artifacts/model_card.json", "w") as f:
     json.dump(model_card, f, indent=2)
 
-print(f"Model card written to artifacts/model_card.json")
+print("Model card written to artifacts/model_card.json")
 print(json.dumps(model_card, indent=2))
