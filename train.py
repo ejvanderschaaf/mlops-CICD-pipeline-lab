@@ -19,7 +19,7 @@ model.fit(X_train, y_train)
 
 # Save model artifact
 os.makedirs("artifacts", exist_ok=True)
-with open("artifacts/model_broken.pkl", "wb") as f:
+with open("artifacts/model.pkl", "wb") as f:
     pickle.dump(model, f)
 
 print("Training complete. Model saved to artifacts/model.pkl")
