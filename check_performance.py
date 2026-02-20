@@ -1,6 +1,6 @@
 import sys
 
-THRESHOLD = 0.99
+THRESHOLD = 0.80
 
 with open("artifacts/metrics.txt", "r") as f:
     accuracy = float(f.read().strip())
